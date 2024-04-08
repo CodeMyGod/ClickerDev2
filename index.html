@@ -20,21 +20,28 @@
       <div id="unity-warning"> </div>
     </div>
     <script>
-      function expand() {
-        Telegram.WebApp.expand();
-    }
 
-    window.onload = function() {
-        expand(); // Розширити додаток при завантаженні сторінки
-    };
+function expand() {
+    if (Telegram !== undefined && Telegram.WebApp !== undefined) {
+        Telegram.WebApp.expand();
+    } else {
+        console.error("Telegram or Telegram.WebApp is undefined. Cannot expand.");
+    }
+}
+      window.onload = function() {
+    expand(); // Розширити додаток при завантаженні сторінки
+};
       
-    window.addEventListener("load", function () {
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("ServiceWorker.js");
-        }
-         window.Telegram.WebApp.expand(); // Розширити гру на весь екран після завантаження сторінки
-      });
-      
+      window.addEventListener("load", function () {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("ServiceWorker.js");
+    }
+    if (Telegram !== undefined && Telegram.WebApp !== undefined) {
+        expand(); // Розширити гру на весь екран після завантаження сторінки
+    } else {
+        console.error("Telegram or Telegram.WebApp is undefined. Cannot expand.");
+    }
+});
 
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
